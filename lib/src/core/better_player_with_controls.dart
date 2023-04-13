@@ -83,26 +83,10 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
         BetterPlayerController.of(context);
 
     double? aspectRatio;
-    if (betterPlayerController.isFullScreen) {
-      if (betterPlayerController.betterPlayerConfiguration
-              .autoDetectFullscreenDeviceOrientation ||
-          betterPlayerController
-              .betterPlayerConfiguration.autoDetectFullscreenAspectRatio) {
-        aspectRatio =
-            betterPlayerController.videoPlayerController?.value.aspectRatio ??
-                1.0;
-      } else {
-        aspectRatio = betterPlayerController
-                .betterPlayerConfiguration.fullScreenAspectRatio ??
-            BetterPlayerUtils.calculateAspectRatio(context);
-      }
-    } else {
-      aspectRatio = betterPlayerController.getAspectRatio();
-    }
+    aspectRatio = betterPlayerController.getAspectRatio();
 
     aspectRatio ??= 16 / 9;
-    final bool isPinchToZoomEnabled =
-        betterPlayerController.betterPlayerConfiguration.enablePinchToZoom;
+    final bool isPinchToZoomEnabled = betterPlayerController.isFullScreen;
 
     final innerContainer = Container(
       width: double.infinity,
