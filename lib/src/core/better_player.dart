@@ -219,13 +219,13 @@ class _BetterPlayerState extends State<BetterPlayer>
         return _fullScreenRoutePageBuilder(
             context, animation, secondaryAnimation);
       },
-      transitionDuration: Duration(seconds: 5),
+      transitionDuration: Duration(milliseconds: 500),
       transitionsBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation, Widget child) {
-        return SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(1.0, 0.0),
-            end: Offset.zero,
+        return FadeTransition(
+          opacity: Tween<double>(
+            begin: 0.0,
+            end: 1.0,
           ).animate(CurvedAnimation(
             parent: animation,
             curve: Curves.easeOut,
