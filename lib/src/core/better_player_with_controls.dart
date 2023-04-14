@@ -173,16 +173,25 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
         children: <Widget>[
           // if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
           if (betterPlayerController.isFullScreen)
-            InteractiveViewer(
-              transformationController: TransformationController(),
-              maxScale:
-                  betterPlayerController.betterPlayerConfiguration.maxScale,
-              panEnabled: betterPlayerController
-                  .betterPlayerConfiguration.enablePinchToZoom,
-              scaleEnabled: betterPlayerController
-                  .betterPlayerConfiguration.enablePinchToZoom,
-              child: Center(child: betterPlayerVideoFitWidget),
-            )
+            Builder(builder: (context) {
+              final childAspectRatio =
+                  betterPlayerController.getAspectRatio() ?? 16 / 9;
+              final screenHeight = MediaQuery.of(context).size.height;
+              final screenWidth = MediaQuery.of(context).size.width;
+              final childHeight = screenHeight;
+              final childWidth = childHeight * childAspectRatio;
+              final maxScale = min(screenWidth / childWidth,
+                  screenHeight / childHeight * childAspectRatio);
+              return InteractiveViewer(
+                transformationController: TransformationController(),
+                maxScale: maxScale,
+                panEnabled: betterPlayerController
+                    .betterPlayerConfiguration.enablePinchToZoom,
+                scaleEnabled: betterPlayerController
+                    .betterPlayerConfiguration.enablePinchToZoom,
+                child: Center(child: betterPlayerVideoFitWidget),
+              );
+            })
           else
             betterPlayerVideoFitWidget,
           betterPlayerController.betterPlayerConfiguration.overlay ??
