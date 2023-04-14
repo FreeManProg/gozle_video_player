@@ -9,6 +9,7 @@ import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/subtitles/better_player_subtitles_drawer.dart';
 import 'package:better_player/src/video_player/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class BetterPlayerWithControls extends StatefulWidget {
   final BetterPlayerController? controller;
@@ -344,20 +345,22 @@ class _BetterPlayerVideoFitWidgetState
     if (_initialized && _started) {
       return Center(
         child: ClipRect(
-          child: AspectRatio(
-            aspectRatio:
-                widget.betterPlayerController.getAspectRatio() ?? 16 / 9,
-            child: FittedBox(
-              fit: widget.boxFit,
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                child: SizedBox(
-                  width: controller!.value.size?.width ?? 0,
-                  height: controller!.value.size?.height ?? 0,
-                  child: VideoPlayer(controller),
-                ),
-              ),
+          child: FittedBox(
+            fit: widget.boxFit,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: LayoutBuilder(builder: (context, constraints) {
+                return AspectRatio(
+                  aspectRatio:
+                      widget.betterPlayerController.getAspectRatio() ?? 16 / 9,
+                  child: SizedBox(
+                    width: controller!.value.size?.width ?? 0,
+                    height: controller!.value.size?.height ?? 0,
+                    child: VideoPlayer(controller),
+                  ),
+                );
+              }),
             ),
           ),
         ),
