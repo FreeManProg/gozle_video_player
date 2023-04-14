@@ -6,6 +6,10 @@ import 'package:flutter/services.dart';
 ///Master configuration which contains children that configure specific part
 ///of player.
 class BetterPlayerConfiguration {
+  // CUSTOM
+
+  final double maxScale;
+
   /// If user can pinch to zoom in the video beyond the safe area.
   final bool enablePinchToZoom;
 
@@ -135,6 +139,7 @@ class BetterPlayerConfiguration {
     this.errorBuilder,
     this.allowedScreenSleep = true,
     this.fullScreenAspectRatio,
+    this.maxScale = 2.5,
     this.deviceOrientationsOnFullScreen = const [
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -184,8 +189,10 @@ class BetterPlayerConfiguration {
     Function(BetterPlayerEvent)? eventListener,
     BetterPlayerSubtitlesConfiguration? subtitlesConfiguration,
     BetterPlayerControlsConfiguration? controlsConfiguration,
+    TransformationController? transformationController,
     BoxFit? fit,
     double? rotation,
+    double? maxScale,
     Function(double visibilityFraction)? playerVisibilityChangedBehavior,
     List<BetterPlayerTranslations>? translations,
     bool? autoDetectFullscreenDeviceOrientation,
@@ -195,6 +202,7 @@ class BetterPlayerConfiguration {
     bool? useRootNavigator,
   }) {
     return BetterPlayerConfiguration(
+      maxScale: maxScale ?? this.maxScale,
       enablePinchToZoom: enablePinchToZoom ?? this.enablePinchToZoom,
       aspectRatio: aspectRatio ?? this.aspectRatio,
       autoPlay: autoPlay ?? this.autoPlay,

@@ -171,15 +171,17 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
       child: Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
-          if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
-          if (isPinchToZoomEnabled)
-            AnimatedBuilder(
-              animation: zoomListener,
-              builder: (context, child) => Padding(
-                padding: EdgeInsets.zero +
-                    MediaQuery.of(context).padding * (1 - zoomListener.value),
-                child: betterPlayerVideoFitWidget,
-              ),
+          // if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
+          if (betterPlayerController.isFullScreen)
+            InteractiveViewer(
+              transformationController: TransformationController(),
+              maxScale:
+                  betterPlayerController.betterPlayerConfiguration.maxScale,
+              panEnabled: betterPlayerController
+                  .betterPlayerConfiguration.enablePinchToZoom,
+              scaleEnabled: betterPlayerController
+                  .betterPlayerConfiguration.enablePinchToZoom,
+              child: betterPlayerVideoFitWidget,
             )
           else
             betterPlayerVideoFitWidget,
@@ -191,7 +193,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
             subtitles: betterPlayerController.subtitlesLines,
             playerVisibilityStream: playerVisibilityStreamController.stream,
           ),
-          if (!placeholderOnTop) _buildPlaceholder(betterPlayerController),
+          // if (!placeholderOnTop) _buildPlaceholder(betterPlayerController),
           _buildControls(context, betterPlayerController),
         ],
       ),
