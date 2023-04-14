@@ -194,7 +194,8 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
             playerVisibilityStream: playerVisibilityStreamController.stream,
           ),
           // if (!placeholderOnTop) _buildPlaceholder(betterPlayerController),
-          _buildControls(context, betterPlayerController),
+          if (betterPlayerController.controlsAlwaysVisible)
+            _buildControls(context, betterPlayerController),
         ],
       ),
     );
