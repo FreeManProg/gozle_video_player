@@ -344,16 +344,12 @@ class _BetterPlayerVideoFitWidgetState
     if (_initialized && _started) {
       return Center(
         child: ClipRect(
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: FittedBox(
-              fit: widget.boxFit,
-              child: SizedBox(
-                width: controller!.value.size?.width ?? 0,
-                height: controller!.value.size?.height ?? 0,
-                child: VideoPlayer(controller),
-              ),
+          child: FittedBox(
+            fit: widget.boxFit,
+            child: SizedBox(
+              width: controller!.value.size?.width ?? 0,
+              height: controller!.value.size?.height ?? 0,
+              child: VideoPlayer(controller),
             ),
           ),
         ),

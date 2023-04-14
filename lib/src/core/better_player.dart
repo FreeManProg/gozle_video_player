@@ -214,25 +214,7 @@ class _BetterPlayerState extends State<BetterPlayer>
   Future<dynamic> _pushFullScreenWidget(BuildContext context) async {
     final TransitionRoute<void> route = PageRouteBuilder<void>(
       settings: const RouteSettings(),
-      pageBuilder: (BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation) {
-        return _fullScreenRoutePageBuilder(
-            context, animation, secondaryAnimation);
-      },
-      transitionDuration: Duration(milliseconds: 500),
-      transitionsBuilder: (BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation, Widget child) {
-        return FadeTransition(
-          opacity: Tween<double>(
-            begin: 0.0,
-            end: 1.0,
-          ).animate(CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeOut,
-          )),
-          child: child,
-        );
-      },
+      pageBuilder: _fullScreenRoutePageBuilder,
     );
 
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
