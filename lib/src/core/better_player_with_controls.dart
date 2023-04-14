@@ -181,7 +181,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
                   .betterPlayerConfiguration.enablePinchToZoom,
               scaleEnabled: betterPlayerController
                   .betterPlayerConfiguration.enablePinchToZoom,
-              child: betterPlayerVideoFitWidget,
+              child: Center(child: betterPlayerVideoFitWidget),
             )
           else
             betterPlayerVideoFitWidget,
