@@ -349,9 +349,9 @@ class _BetterPlayerVideoFitWidgetState
             height: double.infinity,
             child: FittedBox(
               fit: widget.boxFit,
-              child: SizedBox(
-                width: controller!.value.size?.width ?? 0,
-                height: controller!.value.size?.height ?? 0,
+              child: AspectRatio(
+                aspectRatio:
+                    widget.betterPlayerController.getAspectRatio() ?? 16 / 9,
                 child: VideoPlayer(controller),
               ),
             ),
