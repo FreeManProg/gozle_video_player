@@ -219,7 +219,7 @@ class _BetterPlayerState extends State<BetterPlayer>
         return _fullScreenRoutePageBuilder(
             context, animation, secondaryAnimation);
       },
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: Duration(seconds: 5),
       transitionsBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation, Widget child) {
         return SlideTransition(
