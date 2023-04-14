@@ -214,15 +214,32 @@ class _BetterPlayerState extends State<BetterPlayer>
   Future<dynamic> _pushFullScreenWidget(BuildContext context) async {
     final TransitionRoute<void> route = PageRouteBuilder<void>(
       settings: const RouteSettings(),
-      pageBuilder: _fullScreenRoutePageBuilder,
+      pageBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
+        return _fullScreenRoutePageBuilder(
+            context, animation, secondaryAnimation);
+      },
+      transitionDuration: Duration(milliseconds: 500),
+      transitionsBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1.0, 0.0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          )),
+          child: child,
+        );
+      },
     );
 
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     if (_betterPlayerConfiguration.autoDetectFullscreenDeviceOrientation ==
         true) {
-      final aspectRatio =
-          widget.controller.videoPlayerController?.value.aspectRatio ?? 1.0;
+      final aspectRatio = widget.controller.getAspectRatio() ?? 16 / 9;
       List<DeviceOrientation> deviceOrientations;
       if (aspectRatio < 1.0) {
         deviceOrientations = [

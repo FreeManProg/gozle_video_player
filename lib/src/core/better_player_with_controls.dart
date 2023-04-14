@@ -82,10 +82,8 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     final BetterPlayerController betterPlayerController =
         BetterPlayerController.of(context);
 
-    double? aspectRatio;
-    aspectRatio = betterPlayerController.getAspectRatio();
+    double aspectRatio = betterPlayerController.getAspectRatio() ?? 16 / 9;
 
-    aspectRatio ??= 16 / 9;
     final bool isPinchToZoomEnabled = betterPlayerController.isFullScreen;
 
     final innerContainer = Container(
