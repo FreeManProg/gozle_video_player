@@ -171,27 +171,16 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
       child: Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
-          // if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
-          if (betterPlayerController.isFullScreen)
-            Builder(builder: (context) {
-              final childAspectRatio =
-                  betterPlayerController.getAspectRatio() ?? 16 / 9;
-              final screenHeight = MediaQuery.of(context).size.height;
-              final screenWidth = MediaQuery.of(context).size.width;
-              final childHeight = screenHeight;
-              final childWidth = childHeight * childAspectRatio;
-              final maxScale = min(screenWidth / childWidth,
-                  screenHeight / childHeight * childAspectRatio);
-              return InteractiveViewer(
-                transformationController: TransformationController(),
-                maxScale: maxScale,
-                panEnabled: betterPlayerController
-                    .betterPlayerConfiguration.enablePinchToZoom,
-                scaleEnabled: betterPlayerController
-                    .betterPlayerConfiguration.enablePinchToZoom,
-                child: Center(child: betterPlayerVideoFitWidget),
-              );
-            })
+          if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
+          if (isPinchToZoomEnabled)
+            AnimatedBuilder(
+              animation: zoomListener,
+              builder: (context, child) => Padding(
+                padding: EdgeInsets.zero +
+                    MediaQuery.of(context).padding * (1 - zoomListener.value),
+                child: betterPlayerVideoFitWidget,
+              ),
+            )
           else
             betterPlayerVideoFitWidget,
           betterPlayerController.betterPlayerConfiguration.overlay ??
@@ -202,7 +191,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
             subtitles: betterPlayerController.subtitlesLines,
             playerVisibilityStream: playerVisibilityStreamController.stream,
           ),
-          // if (!placeholderOnTop) _buildPlaceholder(betterPlayerController),
+          if (!placeholderOnTop) _buildPlaceholder(betterPlayerController),
           _buildControls(context, betterPlayerController),
         ],
       ),
