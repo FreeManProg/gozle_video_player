@@ -89,11 +89,9 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     return InteractiveViewer(
       panEnabled: isPinchToZoomEnabled,
       scaleEnabled: isPinchToZoomEnabled,
-      child: Center(
-        child: AspectRatio(
-          aspectRatio: aspectRatio,
-          child: _buildPlayerWithControls(betterPlayerController, context),
-        ),
+      child: AspectRatio(
+        aspectRatio: aspectRatio,
+        child: _buildPlayerWithControls(betterPlayerController, context),
       ),
     );
   }
@@ -302,18 +300,16 @@ class _BetterPlayerVideoFitWidgetState
   @override
   Widget build(BuildContext context) {
     if (_initialized && _started) {
-      return Center(
-        child: ClipRect(
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: FittedBox(
-              fit: widget.boxFit,
-              child: SizedBox(
-                width: controller!.value.size?.width ?? 0,
-                height: controller!.value.size?.height ?? 0,
-                child: VideoPlayer(controller),
-              ),
+      return ClipRect(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: FittedBox(
+            fit: widget.boxFit,
+            child: SizedBox(
+              width: controller!.value.size?.width ?? 0,
+              height: controller!.value.size?.height ?? 0,
+              child: VideoPlayer(controller),
             ),
           ),
         ),
