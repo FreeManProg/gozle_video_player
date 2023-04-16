@@ -82,9 +82,8 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     final BetterPlayerController betterPlayerController =
         BetterPlayerController.of(context);
 
-    double? aspectRatio = betterPlayerController.getAspectRatio();
+    double? aspectRatio = betterPlayerController.getAspectRatio() ?? 16 / 9;
 
-    aspectRatio ??= 16 / 9;
     final bool isPinchToZoomEnabled = betterPlayerController.isFullScreen;
 
     final innerContainer = Container(
@@ -304,8 +303,14 @@ class _BetterPlayerVideoFitWidgetState
 
   @override
   Widget build(BuildContext context) {
+    double? aspectRatio =
+        widget.betterPlayerController.getAspectRatio() ?? 16 / 9;
+
     if (_initialized && _started) {
-      return VideoPlayer(controller);
+      return AspectRatio(
+        aspectRatio: aspectRatio,
+        child: VideoPlayer(controller),
+      );
     } else {
       return const SizedBox();
     }
