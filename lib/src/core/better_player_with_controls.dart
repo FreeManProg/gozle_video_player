@@ -107,10 +107,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
       width: double.infinity,
       color: betterPlayerController
           .betterPlayerConfiguration.controlsConfiguration.backgroundColor,
-      child: AspectRatio(
-        aspectRatio: aspectRatio,
-        child: _buildPlayerWithControls(betterPlayerController, context),
-      ),
+      child: _buildPlayerWithControls(betterPlayerController, context),
     );
 
     if (betterPlayerController.betterPlayerConfiguration.expandToFill) {
