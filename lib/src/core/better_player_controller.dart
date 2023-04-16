@@ -470,7 +470,8 @@ class BetterPlayerController {
               _betterPlayerDataSource?.notificationConfiguration?.activityName,
           clearKey: _betterPlayerDataSource?.drmConfiguration?.clearKey,
           videoExtension: _betterPlayerDataSource!.videoExtension,
-          bufferingConfiguration: _betterPlayerDataSource?.bufferingConfiguration,
+          bufferingConfiguration:
+              _betterPlayerDataSource?.bufferingConfiguration,
         );
 
         break;
@@ -1262,7 +1263,7 @@ class BetterPlayerController {
   ///cache started for given [betterPlayerDataSource] then it will be ignored.
   Future<void> stopPreCache(
       BetterPlayerDataSource betterPlayerDataSource) async {
-    return VideoPlayerController?.stopPreCache(betterPlayerDataSource.url,
+    return VideoPlayerController.stopPreCache(betterPlayerDataSource.url,
         betterPlayerDataSource.cacheConfiguration?.key);
   }
 

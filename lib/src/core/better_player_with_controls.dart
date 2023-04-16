@@ -82,71 +82,58 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     final BetterPlayerController betterPlayerController =
         BetterPlayerController.of(context);
 
-    double? aspectRatio;
-    if (betterPlayerController.isFullScreen) {
-      if (betterPlayerController.betterPlayerConfiguration
-              .autoDetectFullscreenDeviceOrientation ||
-          betterPlayerController
-              .betterPlayerConfiguration.autoDetectFullscreenAspectRatio) {
-        aspectRatio =
-            betterPlayerController.videoPlayerController?.value.aspectRatio ??
-                1.0;
-      } else {
-        aspectRatio = betterPlayerController
-                .betterPlayerConfiguration.fullScreenAspectRatio ??
-            BetterPlayerUtils.calculateAspectRatio(context);
-      }
-    } else {
-      aspectRatio = betterPlayerController.getAspectRatio();
-    }
-
-    aspectRatio ??= 16 / 9;
-    final bool isPinchToZoomEnabled =
-        betterPlayerController.betterPlayerConfiguration.enablePinchToZoom;
+    final aspectRatio = betterPlayerController.getAspectRatio() ?? 16 / 9;
+    final bool isPinchToZoomEnabled = betterPlayerController.isFullScreen;
 
     final innerContainer = Container(
       width: double.infinity,
       color: betterPlayerController
           .betterPlayerConfiguration.controlsConfiguration.backgroundColor,
-      child: GestureDetector(
-        onScaleUpdate: !isPinchToZoomEnabled
-            ? null
-            : (details) {
-                // calculating difference between new scale and previous value
-                // when zooming out, a factor of 2 is used so that the zoom value can be reduced to 0
-                // when zooming in, a factor of 2 is used to uniformly change the zoom value
-                double diff = (details.scale - scaleListener.value) * 2;
+      child: isPinchToZoomEnabled
+          ? GestureDetector(
+              onScaleUpdate: !isPinchToZoomEnabled
+                  ? null
+                  : (details) {
+                      // calculating difference between new scale and previous value
+                      // when zooming out, a factor of 2 is used so that the zoom value can be reduced to 0
+                      // when zooming in, a factor of 2 is used to uniformly change the zoom value
+                      double diff = (details.scale - scaleListener.value) * 2;
 
-                // checking current zoom for maximum and minimum value
-                // minimum value is 0 - video not showing on notch area
-                // maximum value is 1 - video showing on notch area
-                if (zoomListener.value + diff > 1) {
-                  zoomListener.value = 1;
-                } else if (zoomListener.value + diff < 0) {
-                  zoomListener.value = 0;
-                } else {
-                  zoomListener.value += diff;
-                }
-                // set current scale as scale value
-                scaleListener.value = details.scale;
-              },
-        onScaleEnd: !isPinchToZoomEnabled
-            ? null
-            : (details) {
-                // bringing zoom value to maximum or minimum
-                if (zoomListener.value <= 0.5) {
-                  zoomListener.value = 0;
-                } else {
-                  zoomListener.value = 1;
-                }
-                // set default scale value
-                scaleListener.value = 1;
-              },
-        child: AspectRatio(
-          aspectRatio: aspectRatio,
-          child: _buildPlayerWithControls(betterPlayerController, context),
-        ),
-      ),
+                      // checking current zoom for maximum and minimum value
+                      // minimum value is 0 - video not showing on notch area
+                      // maximum value is 1 - video showing on notch area
+                      if (zoomListener.value + diff > 1) {
+                        zoomListener.value = 1;
+                      } else if (zoomListener.value + diff < 0) {
+                        zoomListener.value = 0;
+                      } else {
+                        zoomListener.value += diff;
+                      }
+                      // set current scale as scale value
+                      scaleListener.value = details.scale;
+                    },
+              onScaleEnd: !isPinchToZoomEnabled
+                  ? null
+                  : (details) {
+                      // bringing zoom value to maximum or minimum
+                      if (zoomListener.value <= 0.5) {
+                        zoomListener.value = 0;
+                      } else {
+                        zoomListener.value = 1;
+                      }
+                      // set default scale value
+                      scaleListener.value = 1;
+                    },
+              child: AspectRatio(
+                aspectRatio: aspectRatio,
+                child:
+                    _buildPlayerWithControls(betterPlayerController, context),
+              ),
+            )
+          : AspectRatio(
+              aspectRatio: aspectRatio,
+              child: _buildPlayerWithControls(betterPlayerController, context),
+            ),
     );
 
     if (betterPlayerController.betterPlayerConfiguration.expandToFill) {
@@ -368,8 +355,8 @@ class _BetterPlayerVideoFitWidgetState
             child: FittedBox(
               fit: widget.boxFit,
               child: SizedBox(
-                width: controller!.value.size?.width ?? 0,
-                height: controller!.value.size?.height ?? 0,
+                width: double.infinity,
+                height: double.infinity,
                 child: VideoPlayer(controller),
               ),
             ),
