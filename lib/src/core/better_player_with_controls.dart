@@ -86,11 +86,10 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
 
     final bool isPinchToZoomEnabled = betterPlayerController.isFullScreen;
 
-    return Center(
-      child: InteractiveViewer(
-        boundaryMargin: EdgeInsets.all(double.infinity),
-        panEnabled: isPinchToZoomEnabled,
-        scaleEnabled: isPinchToZoomEnabled,
+    return InteractiveViewer(
+      panEnabled: isPinchToZoomEnabled,
+      scaleEnabled: isPinchToZoomEnabled,
+      child: Center(
         child: AspectRatio(
           aspectRatio: aspectRatio,
           child: _buildPlayerWithControls(betterPlayerController, context),
