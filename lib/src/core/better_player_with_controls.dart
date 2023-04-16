@@ -82,8 +82,9 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     final BetterPlayerController betterPlayerController =
         BetterPlayerController.of(context);
 
-    double? aspectRatio = betterPlayerController.getAspectRatio() ?? 16 / 9;
+    double? aspectRatio = betterPlayerController.getAspectRatio();
 
+    aspectRatio ??= 16 / 9;
     final bool isPinchToZoomEnabled = betterPlayerController.isFullScreen;
 
     final innerContainer = Container(
@@ -303,17 +304,42 @@ class _BetterPlayerVideoFitWidgetState
 
   @override
   Widget build(BuildContext context) {
-    double? aspectRatio =
-        widget.betterPlayerController.getAspectRatio() ?? 16 / 9;
-
     if (_initialized && _started) {
-      return AspectRatio(
-        aspectRatio: aspectRatio,
-        child: VideoPlayer(controller),
+      final isPortrait =
+          MediaQuery.of(context).orientation == Orientation.portrait;
+
+      return Center(
+        child: ClipRect(
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: isPortrait ? _buildPortraitVideo() : _buildLandscapeVideo(),
+          ),
+        ),
       );
     } else {
       return const SizedBox();
     }
+  }
+
+  Widget _buildPortraitVideo() {
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width /
+            (widget.betterPlayerController.getAspectRatio() ?? 16 / 9),
+        child: VideoPlayer(controller),
+      ),
+    );
+  }
+
+  Widget _buildLandscapeVideo() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: VideoPlayer(controller),
+    );
   }
 
   @override
