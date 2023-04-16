@@ -305,27 +305,7 @@ class _BetterPlayerVideoFitWidgetState
   @override
   Widget build(BuildContext context) {
     if (_initialized && _started) {
-      return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return ClipRect(
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: FittedBox(
-                fit: widget.boxFit,
-                child: Center(
-                  child: SizedBox(
-                    width: constraints.maxHeight,
-                    height: constraints.maxHeight,
-                    child: VideoPlayer(controller),
-                  ),
-                ),
-              ),
-            ),
-          );
-          ;
-        },
-      );
+      return VideoPlayer(controller);
     } else {
       return const SizedBox();
     }
