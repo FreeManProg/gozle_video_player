@@ -335,11 +335,7 @@ class _BetterPlayerVideoFitWidgetState
   }
 
   Widget _buildLandscapeVideo() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: VideoPlayer(controller),
-    );
+    return VideoPlayer(controller);
   }
 
   @override
