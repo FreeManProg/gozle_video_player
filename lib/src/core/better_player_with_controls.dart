@@ -335,12 +335,9 @@ class _BetterPlayerVideoFitWidgetState
   }
 
   Widget _buildLandscapeVideo() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width /
-          (widget.betterPlayerController.getAspectRatio() ?? 16 / 9),
-      child: VideoPlayer(controller),
-    );
+    return AspectRatio(
+        aspectRatio: widget.betterPlayerController.getAspectRatio() ?? 16 / 9,
+        child: VideoPlayer(controller));
   }
 
   @override
